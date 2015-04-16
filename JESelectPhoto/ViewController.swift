@@ -14,6 +14,12 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
+  
+    @IBAction func push(sender: AnyObject) {
+        
+        self.navigationController?.pushViewController(JESPViewController(), animated: true);
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

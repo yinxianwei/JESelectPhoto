@@ -19,6 +19,8 @@
 		843DF43A1ADFB0D3005FACB7 /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4321ADFB0D3005FACB7 /* RSKTouchView.m */; };
 		843DF43B1ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4341ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m */; };
 		843DF43C1ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4361ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m */; };
+		843DF43E1ADFB2DC005FACB7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */; };
+		843DF4401ADFB3E7005FACB7 /* JESPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		843DF4341ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
 		843DF4351ADFB0D3005FACB7 /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
 		843DF4361ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
+		843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JESPViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843DF43E1ADFB2DC005FACB7 /* AssetsLibrary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 		843DF3FB1ADFB0C3005FACB7 = {
 			isa = PBXGroup;
 			children = (
+				843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */,
 				843DF4061ADFB0C3005FACB7 /* JESelectPhoto */,
 				843DF41C1ADFB0C3005FACB7 /* JESelectPhotoTests */,
 				843DF4051ADFB0C3005FACB7 /* Products */,
@@ -99,6 +105,7 @@
 				843DF4291ADFB0D3005FACB7 /* RSKImageCropper */,
 				843DF4091ADFB0C3005FACB7 /* AppDelegate.swift */,
 				843DF40B1ADFB0C3005FACB7 /* ViewController.swift */,
+				843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */,
 				843DF40D1ADFB0C3005FACB7 /* Main.storyboard */,
 				843DF4101ADFB0C3005FACB7 /* Images.xcassets */,
 				843DF4121ADFB0C3005FACB7 /* LaunchScreen.xib */,
@@ -257,6 +264,7 @@
 				843DF4381ADFB0D3005FACB7 /* RSKImageCropViewController.m in Sources */,
 				843DF43A1ADFB0D3005FACB7 /* RSKTouchView.m in Sources */,
 				843DF43B1ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m in Sources */,
+				843DF4401ADFB3E7005FACB7 /* JESPViewController.swift in Sources */,
 				843DF4371ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m in Sources */,
 				843DF43C1ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m in Sources */,
 				843DF40A1ADFB0C3005FACB7 /* AppDelegate.swift in Sources */,
