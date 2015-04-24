@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>9EB338D9-5FB4-43FA-98F9-FB93FB7A79EF</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>JESelectPhoto</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>B2BB5CF59FCC5B0A6D05B10E7F701ECA6836F2F2</key>
 		<string>https://github.com/yinxianwei/JESelectPhoto.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>JESelectPhoto.xcodeproj/project.xcworkspace</string>
+	<string>JESelectPhoto.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>B2BB5CF59FCC5B0A6D05B10E7F701ECA6836F2F2</key>

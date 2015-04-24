@@ -463,6 +463,7 @@
 				843DF4251ADFB0C3005FACB7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		843DF4261ADFB0C3005FACB7 /* Build configuration list for PBXNativeTarget "JESelectPhotoTests" */ = {
 			isa = XCConfigurationList;
@@ -471,6 +472,7 @@
 				843DF4281ADFB0C3005FACB7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

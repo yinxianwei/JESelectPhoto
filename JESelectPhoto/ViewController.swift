@@ -17,7 +17,18 @@ class ViewController: UIViewController {
   
     @IBAction func push(sender: AnyObject) {
         
-        self.navigationController?.pushViewController(JESPViewController(), animated: true);
+        var flowlayout:UICollectionViewFlowLayout = UICollectionViewFlowLayout();
+        flowlayout.scrollDirection = UICollectionViewScrollDirection.Vertical;
+        
+        
+
+        var s = JESPViewController(collectionViewLayout:flowlayout)
+        
+
+        self.presentViewController(UINavigationController(rootViewController: s), animated: true) { () -> Void in
+            
+        };
+//        self.navigationController?.pushViewController(s, animated: true);
         
     }
 
