@@ -8,6 +8,9 @@
 
 import UIKit
 import AssetsLibrary
+import AVFoundation
+import MobileCoreServices
+
 let reuseIdentifier = "Cell";
 
 let KEY_GROUPNAME = "groupName";
@@ -16,34 +19,44 @@ let KEY_SELECT    = "select"
 let KEY_ALLPHOTOS = "全部照片"
 
 
-class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout,UITableViewDataSource,UITableViewDelegate {
+
+@objc protocol JESPViewControllerDelegate:NSObjectProtocol{
+
+    
+    optional func didSelectImages(images:NSArray);
+    
+}
+
+
+class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout,UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+    
+    var delegate : JESPViewControllerDelegate?
+    var maximumOfSelected:Int?
+    var allowsMultipleSelection:Bool?;
     
     
-    var assetsLibrary:ALAssetsLibrary = ALAssetsLibrary();
-    var photosArray:NSMutableArray = [];
-    var tableView:UITableView = UITableView();
-    var titleButton:UIButton = UIButton();
-    var bgControl = UIControl();
-    var selectIndexPaths:NSMutableArray = NSMutableArray();
-    
+    private  var assetsLibrary:ALAssetsLibrary = ALAssetsLibrary();
+    private  var photosArray:NSMutableArray = [];
+    private  var selectPhotosCount:Int = 0;
+    private  var tableView:UITableView = UITableView();
+    private  var titleButton:UIButton = UIButton();
+    private  var bgControl = UIControl();
+    private  var selectIndexPaths:NSMutableArray = NSMutableArray();
+
     var groupId = -1;
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.initToolBar();
+        
         self.initTabView();
         
         self.initNavBar();
         
-        self.collectionView?.allowsMultipleSelection = true;
+        self.initCollView();
         
         
-        self.view.backgroundColor = UIColor.whiteColor();
-        
-
-        self.collectionView?.backgroundColor = UIColor.whiteColor();
-        
-        self.collectionView!.registerClass(JEPhotoCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
 //TODO: 可以加个load动画
         self.getAllPhotos({ (photos) -> () in
@@ -64,7 +77,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         }else{
             
             self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "取消", style: UIBarButtonItemStyle.Done, target: self, action: "dismiss:");
-
+           
             self.titleButton.frame = CGRectMake(0, 0, 200, 30);
             self.titleButton.addTarget(self, action: "titleButtonClick", forControlEvents: UIControlEvents.TouchUpInside);
             self.navigationItem.titleView = self.titleButton;
@@ -72,6 +85,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             self.titleButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
             self.titleButton.setImage(UIImage(named: "camera_arrow"), forState: UIControlState.Normal);
 
+            
         }
     }
     
@@ -91,6 +105,36 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         
         self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "Cell");
         self.tableView.backgroundColor = UIColor.whiteColor();
+    }
+    
+    func initCollView(){
+
+        self.collectionView?.scrollsToTop = false;
+
+        self.view.backgroundColor = UIColor.whiteColor();
+        
+        self.collectionView?.backgroundColor = UIColor.clearColor();
+        
+        self.collectionView!.registerClass(JEPhotoCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        
+        self.collectionView?.frame = CGRectMake(self.collectionView!.frame.origin.x, self.collectionView!.frame.origin.y, self.collectionView!.frame.size.width, self.collectionView!.frame.size.height - 40);
+    }
+    
+    func initToolBar(){
+        
+        var toolBarBgImageView = UIImageView(frame: CGRectMake(0, self.view.frame.size.height - 20, self.view.frame.size.width, 40));
+        toolBarBgImageView.userInteractionEnabled = true;
+        toolBarBgImageView.image = UIImage(named: "order_search_bar_bg");
+        self.view.addSubview(toolBarBgImageView);
+        toolBarBgImageView.backgroundColor = UIColor.clearColor();
+        
+        var nextButton = UIButton(frame: CGRectMake(self.view.frame.width - 80, 5, 70, 30));
+        toolBarBgImageView.addSubview(nextButton);
+        
+        nextButton.setTitle("下一步", forState: UIControlState.Normal);
+        nextButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
+        nextButton.setBackgroundImage(UIImage(named: "exception"), forState: UIControlState.Normal);
+        nextButton.addTarget(self, action: "nextClick:", forControlEvents: UIControlEvents.TouchUpInside);
     }
     
     func titleButtonClick() {
@@ -116,6 +160,86 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         });
     }
 
+    func nextClick(sender:AnyObject){
+        
+        if self.selectPhotosCount>0 && self.delegate != nil{
+            var array = self.getAllSelectPhotos();
+            
+            self.delegate?.didSelectImages?(array);
+            self.dismissViewControllerAnimated(false, completion: { () -> Void in
+                
+            });
+        }
+    }
+    func getAllSelectPhotos() -> NSArray{
+        
+        var array = NSMutableArray();
+        
+        for dict in self.photosArray{
+            var ary = dict[KEY_PHOTOS] as! NSArray;
+            if ary.count>0{
+                for obj in ary{
+                    let res = obj as! ALAsset;
+                    if res.isSelect == true{
+                        let image = UIImage(CGImage: res.defaultRepresentation().fullResolutionImage().takeUnretainedValue());
+                        array.addObject(image!);
+                    }
+                }
+            }
+        }
+        
+        return array;
+    }
+    
+    func openCamera( block:(image: UIImage)->() ) {
+
+        let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
+//TODO: 枚举类型怎么判断？操
+        if false{
+            
+            
+        }
+        else{
+            var picker = UIImagePickerController();
+            picker.delegate = self;
+            picker.allowsEditing = true;
+            picker.sourceType = UIImagePickerControllerSourceType.Camera;
+        
+            self.presentViewController(picker, animated: true) { () -> Void in
+                
+            };
+        }
+        
+    
+        
+    }
+    
+//MARK: - UIImagePickerControllerDelegate
+  
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        if self.delegate != nil{
+
+            var type = info[UIImagePickerControllerMediaType] as! String;
+            
+            if type == String(kUTTypeImage) && picker.sourceType == UIImagePickerControllerSourceType.Camera{
+                
+
+                var image = info[self.allowsMultipleSelection == true ? UIImagePickerControllerOriginalImage : UIImagePickerControllerEditedImage] as! UIImage;
+                
+                self.delegate?.didSelectImages?([image]);
+                
+            }else{
+                
+            }
+        }
+        self.dismissViewControllerAnimated(false, completion: { () -> Void in
+            
+        });
+        picker.dismissViewControllerAnimated(true, completion: { () -> Void in
+            
+        });
+        
+    }
     
     
     /**
@@ -214,26 +338,19 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             cell.selectButton.hidden = true;
             return cell;
         }
-        // Configure the cell
-        var imagePath:String!;
-        if groupId == -1 {
-
-            var ref = self.getAssetInPhotosWithIndex(indexPath.row - 1)?.thumbnail().takeUnretainedValue();
-            
-            cell.imageView.image =  UIImage(CGImage: ref);
-            
+        
+        var res = self.getAssetWithIndex(indexPath.row);
+        var ref = res.thumbnail().takeUnretainedValue();
+        
+        cell.imageView.image =  UIImage(CGImage: ref);
+        cell.selectPhoto = res.isSelect;
+        if self.allowsMultipleSelection == true{
+            cell.selectButton.hidden = false;
         }else{
-            
-            var array = self.photosArray[groupId][KEY_PHOTOS] as! NSArray;
-            var res = array[indexPath.row - 1] as! ALAsset;
-            var ref = res.thumbnail().takeUnretainedValue();
-          
-            cell.imageView.image =  UIImage(CGImage: ref);
-
+            cell.selectButton.hidden = true;
         }
-//        cell.selectPhoto = cell.selected;
-//        println("=----\(cell.selected)")
-        cell.selectButton.hidden = false;
+
+        
         return cell
     }
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -252,19 +369,54 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         return 5;
     }
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-
         
-        println(indexPath.row);
+        if indexPath.row == 0{
+            //相机
+            self.openCamera({ (image:UIImage) -> () in
+                
+                
+            });
+        }
+        else{
+            if self.allowsMultipleSelection == true{
+                
+                var res = self.getAssetWithIndex(indexPath.row);
+                
+                res.isSelect = !res.isSelect;
+                self.selectPhotosCount += (res.isSelect == true ? 1 : -1);
+                
+                self.collectionView?.reloadData();
+            
+            }
+            else{
+                if (self.delegate != nil){
+                    var res = self.getAssetWithIndex(indexPath.row);
+                    let image = UIImage(CGImage: res.defaultRepresentation().fullResolutionImage().takeUnretainedValue());
+                    var array = NSMutableArray(array: [image!]);
+                    
+                    self.delegate?.didSelectImages?(array);
+                }
+                self.dismissViewControllerAnimated(false, completion: { () -> Void in
+                    
+                });
+            }
         
+        }
     }
     
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
-        println("--->>\(indexPath.row)");
-        
-        
-//        self.collectionView?.reloadData();
-    }
     
+    func getAssetWithIndex(index:Int) -> ALAsset! {
+        
+        var res:ALAsset;
+        
+        if (groupId == -1){
+            res = self.getAssetInPhotosWithIndex(index - 1)!;
+        }else{
+            var array = self.photosArray[groupId][KEY_PHOTOS] as! NSArray;
+            res = array[index - 1] as! ALAsset;
+        }
+        return res;
+    }
     
     func getAssetInPhotosWithIndex(index:Int) -> ALAsset? {
         var count = 0;
@@ -330,7 +482,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                 var ary = NSMutableArray();
                 group.enumerateAssetsUsingBlock({ (result:ALAsset!, index:Int, stop:UnsafeMutablePointer<ObjCBool>) -> Void in
                     if (result != nil){
-                        
+
                         var assetType  = result.valueForProperty(ALAssetPropertyType) as! String;
                         
                         if assetType == ALAssetTypePhoto{
@@ -341,8 +493,6 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                     }
                     else
                     {
-//                        UIButton().addTarget(self, action: "xxx", forControlEvents: UIControlEvents.TouchUpInside);
-
 
                         var dict = NSMutableDictionary(objects: [group.valueForProperty(ALAssetsGroupPropertyName),ary,0], forKeys:[KEY_GROUPNAME,KEY_PHOTOS,KEY_SELECT] );
                         self.photosArray.addObject(dict);
@@ -383,6 +533,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
 
 
 
+
 class JEPhotoCollectionViewCell:UICollectionViewCell {
     
     var imageView:UIImageView!;
@@ -396,7 +547,7 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
         set{
             if _selectPhoto != newValue{
                 if newValue{
-                    self.selectButton.setImage(UIImage(named: "LLRefundCheckboxSelectedReadonly"), forState: UIControlState.Normal);
+                    self.selectButton.setImage(UIImage(named: "fj_icon_filter_selected01"), forState: UIControlState.Normal);
                 }
                 else{
                     self.selectButton.setImage(UIImage(named: "LLPaySelectedNot"), forState: UIControlState.Normal);
@@ -415,7 +566,7 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
         self.selectButton = UIButton(frame: CGRectMake(frame.size.width - 30, 0, 30, 30));
         self.selectButton.setImage(UIImage(named: "LLPaySelectedNot"), forState: UIControlState.Normal);
         self.contentView.addSubview(self.selectButton);
-        
+        self.selectButton.userInteractionEnabled = false;
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -431,4 +582,33 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
     
 }
 
+
+
+
+
+extension ALAsset {
+    private struct AssociatedKeys {
+        static var DescriptiveName = false
+    }
+    
+    var isSelect: Bool! {
+        get {
+            var obj = objc_getAssociatedObject(self, &AssociatedKeys.DescriptiveName) as? Bool;
+            if obj == nil{
+                return false;
+            }
+            return obj;
+        }
+        set {
+            if let newValue = newValue {
+                objc_setAssociatedObject(
+                    self,
+                    &AssociatedKeys.DescriptiveName,
+                    newValue as Bool!,
+                    UInt(OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                )
+            }
+        }
+    }
+}
 

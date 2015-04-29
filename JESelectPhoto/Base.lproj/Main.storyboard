@@ -55,6 +55,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mlN-84-FmD"/>
+                    <connections>
+                        <outlet property="button" destination="NoF-dK-Via" id="6dt-dZ-Zox"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>

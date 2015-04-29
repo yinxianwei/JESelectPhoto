@@ -8,11 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController,JESPViewControllerDelegate {
 
+    @IBOutlet weak var button: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    
     }
   
     @IBAction func push(sender: AnyObject) {
@@ -23,20 +24,54 @@ class ViewController: UIViewController {
         
 
         var s = JESPViewController(collectionViewLayout:flowlayout)
-        
-
+        s.delegate = self;
+        s.allowsMultipleSelection = false;
         self.presentViewController(UINavigationController(rootViewController: s), animated: true) { () -> Void in
             
         };
-//        self.navigationController?.pushViewController(s, animated: true);
+        
+    }
+    func didSelectImages(images: NSArray) {
+        
+        println(images);
+        let image = images[0] as! UIImage;
+        
+        button.setBackgroundImage(image, forState: UIControlState.Normal);
         
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+       
+        
+        
     }
 
 
 }
 
+
+
+
+//var blocks: NSArray {
+//get{
+//    if objc_getAssociatedObject(self, gestureRecognizerBlocksArray) == nil {
+//        objc_setAssociatedObject(self, gestureRecognizerBlocksArray, NSMutableArray(), UInt(OBJC_ASSOCIATION_RETAIN))
+//    }
+//    return objc_getAssociatedObject(self, gestureRecognizerBlocksArray) as NSArray
+//}
+//}
+//
+//
+//static char strAddrKey = 'a';
+//
+//- (NSString *)addr
+//{
+//    return objc_getAssociatedObject(self, &strAddrKey);
+//    }
+//    
+//    - (void)setAddr:(NSString *)addr
+//{
+//    objc_setAssociatedObject(self, &strAddrKey, addr, OBJC_ASSOCIATION_COPY_NONATOMIC);
+//}
