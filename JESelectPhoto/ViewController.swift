@@ -25,21 +25,28 @@ class ViewController: UIViewController,JESPViewControllerDelegate {
 
         var s = JESPViewController(collectionViewLayout:flowlayout)
         s.delegate = self;
-        s.allowsMultipleSelection = false;
+        s.allowsMultipleSelection = true;
+        s.maximumOfSelected = 3;
         self.presentViewController(UINavigationController(rootViewController: s), animated: true) { () -> Void in
             
         };
         
     }
-    func didSelectImages(images: NSArray) {
-        
+    
+    func SPViewControllerdidSelectImages(images: NSArray) {
         println(images);
         let image = images[0] as! UIImage;
         
         button.setBackgroundImage(image, forState: UIControlState.Normal);
+
+    }
+    
+    func SPViewControllerCancle() {
         
     }
-
+    func SPViewControllerError(error: NSError) {
+         println(error);
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

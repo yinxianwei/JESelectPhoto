@@ -23,15 +23,18 @@ let KEY_ALLPHOTOS = "全部照片"
 @objc protocol JESPViewControllerDelegate:NSObjectProtocol{
 
     
-    optional func didSelectImages(images:NSArray);
+    optional func SPViewControllerdidSelectImages(images:NSArray);
     
+    optional func SPViewControllerCancle();
+    
+    optional func SPViewControllerError(error:NSError);
 }
 
 
 class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout,UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
     var delegate : JESPViewControllerDelegate?
-    var maximumOfSelected:Int?
+    var maximumOfSelected:Int = 9;
     var allowsMultipleSelection:Bool?;
     
     
@@ -156,7 +159,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     func dismiss(sender:AnyObject){
         
         self.dismissViewControllerAnimated(true, completion: { () -> Void in
-            
+            self.delegate?.SPViewControllerCancle?();
         });
     }
 
@@ -165,8 +168,8 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         if self.selectPhotosCount>0 && self.delegate != nil{
             var array = self.getAllSelectPhotos();
             
-            self.delegate?.didSelectImages?(array);
-            self.dismissViewControllerAnimated(false, completion: { () -> Void in
+            self.delegate?.SPViewControllerdidSelectImages?(array);
+            self.dismissViewControllerAnimated(true, completion: { () -> Void in
                 
             });
         }
@@ -194,9 +197,10 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     func openCamera( block:(image: UIImage)->() ) {
 
         let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
-//TODO: 枚举类型怎么判断？操
-        if false{
+    
+        if authStatus == AVAuthorizationStatus.NotDetermined || authStatus == AVAuthorizationStatus.Denied || authStatus == AVAuthorizationStatus.Restricted{
             
+            self.delegate?.SPViewControllerError?(NSError(domain: "没有相机权限或设备无相机", code: -1, userInfo: nil));
             
         }
         else{
@@ -204,14 +208,11 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             picker.delegate = self;
             picker.allowsEditing = true;
             picker.sourceType = UIImagePickerControllerSourceType.Camera;
-        
+
             self.presentViewController(picker, animated: true) { () -> Void in
                 
             };
         }
-        
-    
-        
     }
     
 //MARK: - UIImagePickerControllerDelegate
@@ -224,21 +225,23 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             if type == String(kUTTypeImage) && picker.sourceType == UIImagePickerControllerSourceType.Camera{
                 
 
-                var image = info[self.allowsMultipleSelection == true ? UIImagePickerControllerOriginalImage : UIImagePickerControllerEditedImage] as! UIImage;
+                var image = info[(self.allowsMultipleSelection == true ? UIImagePickerControllerOriginalImage : UIImagePickerControllerEditedImage)] as! UIImage;
                 
-                self.delegate?.didSelectImages?([image]);
+                self.delegate?.SPViewControllerdidSelectImages?([image]);
                 
             }else{
                 
             }
         }
-        self.dismissViewControllerAnimated(false, completion: { () -> Void in
-            
-        });
-        picker.dismissViewControllerAnimated(true, completion: { () -> Void in
-            
-        });
         
+        var imageView = UIImageView(frame: CGRectMake(0, 0, self.view.frame.size.width, UIScreen.mainScreen().bounds.size.height));
+        imageView.image = picker.view.getSnapshotImage();
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false);
+        self.view.addSubview(imageView);
+        
+        picker.dismissViewControllerAnimated(false, completion: nil);
+        self.dismissViewControllerAnimated(true, completion: nil);
     }
     
     
@@ -380,7 +383,13 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         else{
             if self.allowsMultipleSelection == true{
                 
+               
+                
                 var res = self.getAssetWithIndex(indexPath.row);
+                
+                if self.selectPhotosCount >= self.maximumOfSelected && res.isSelect != true{
+                    return;
+                }
                 
                 res.isSelect = !res.isSelect;
                 self.selectPhotosCount += (res.isSelect == true ? 1 : -1);
@@ -394,7 +403,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                     let image = UIImage(CGImage: res.defaultRepresentation().fullResolutionImage().takeUnretainedValue());
                     var array = NSMutableArray(array: [image!]);
                     
-                    self.delegate?.didSelectImages?(array);
+                    self.delegate?.SPViewControllerdidSelectImages?(array);
                 }
                 self.dismissViewControllerAnimated(false, completion: { () -> Void in
                     
@@ -583,7 +592,17 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
 }
 
 
-
+extension UIView{
+    
+     func getSnapshotImage() -> UIImage {
+  
+        UIGraphicsBeginImageContext(self.frame.size);
+        self.layer.renderInContext(UIGraphicsGetCurrentContext());
+        var image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return image;
+    }
+}
 
 
 extension ALAsset {
