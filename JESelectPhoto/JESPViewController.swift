@@ -46,7 +46,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     private  var bgControl = UIControl();
     private  var selectIndexPaths:NSMutableArray = NSMutableArray();
 
-    var groupId = -1;
+    var groupId = 0;
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,7 +64,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
 //TODO: 可以加个load动画
         self.getAllPhotos({ (photos) -> () in
 //TODO: 结束动画
-            self.selectGroup(-1);
+            self.selectGroup(0);
             self.tableView.reloadData();
             }, errorBlock: { (error:NSError!) -> Void in
                 
@@ -84,7 +84,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             self.titleButton.frame = CGRectMake(0, 0, 200, 30);
             self.titleButton.addTarget(self, action: "titleButtonClick", forControlEvents: UIControlEvents.TouchUpInside);
             self.navigationItem.titleView = self.titleButton;
-            self.titleButton.setTitle(KEY_ALLPHOTOS, forState: UIControlState.Normal);
+
             self.titleButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
             self.titleButton.setImage(UIImage(named: "camera_arrow"), forState: UIControlState.Normal);
 
@@ -266,6 +266,13 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     :param: index -1为全部
     */
     func selectGroup(index:Int){
+        
+        var dict = self.photosArray[index] as! NSDictionary;
+        var titleStr = dict[KEY_GROUPNAME] as! String;
+        
+        self.titleButton.setTitle(titleStr, forState: UIControlState.Normal);
+
+        
         self.groupId = index;
         
         self.collectionView?.reloadData();
@@ -280,22 +287,16 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.photosArray.count+1;
+        return self.photosArray.count;
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell;
         
-        if indexPath.row == 0{
-            cell.textLabel?.text = KEY_ALLPHOTOS;
-        }
-        else{
-            var dict = self.photosArray[indexPath.row-1] as! NSDictionary;
-            var name = dict[KEY_GROUPNAME] as! String;
-            cell.textLabel?.text = name;
-        }
-        
+        var dict = self.photosArray[indexPath.row] as! NSDictionary;
+        var name = dict[KEY_GROUPNAME] as! String;
+        cell.textLabel?.text = name;
         
         return cell;
     }
@@ -306,19 +307,12 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         
         self.titleButtonClick();
         
-        var index = indexPath.row - 1;
+        var index = indexPath.row;
         
         if index != self.groupId{
             
-            self.selectGroup(indexPath.row-1);
-                        
-            var titleStr = KEY_ALLPHOTOS;
-            if groupId != -1{
-                var dict = self.photosArray[groupId] as! NSDictionary;
-                titleStr = dict[KEY_GROUPNAME] as! String;
-            }
+            self.selectGroup(indexPath.row);
             
-            self.titleButton.setTitle(titleStr, forState: UIControlState.Normal);
 
         }
         
@@ -442,12 +436,9 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         
         var res:ALAsset;
         
-        if (groupId == -1){
-            res = self.getAssetInPhotosWithIndex(index - 1)!;
-        }else{
-            var array = self.photosArray[groupId][KEY_PHOTOS] as! NSArray;
-            res = array[index - 1] as! ALAsset;
-        }
+        var array = self.photosArray[groupId][KEY_PHOTOS] as! NSArray;
+        res = array[index - 1] as! ALAsset;
+
         return res;
     }
     
@@ -521,14 +512,15 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                         if assetType == ALAssetTypePhoto{
                             
                             ary.addObject(result);
+                        
                         }
                         
                     }
                     else
                     {
-
-                        var dict = NSMutableDictionary(objects: [group.valueForProperty(ALAssetsGroupPropertyName),ary,0], forKeys:[KEY_GROUPNAME,KEY_PHOTOS,KEY_SELECT] );
-                        self.photosArray.addObject(dict);
+                        
+                        var dict = NSMutableDictionary(objects: [group.valueForProperty(ALAssetsGroupPropertyName),ary.reverseObjectEnumerator().allObjects,0], forKeys:[KEY_GROUPNAME,KEY_PHOTOS,KEY_SELECT] );
+                        self.photosArray.insertObject(dict, atIndex: 0);
                     }
                     
                 });
@@ -572,7 +564,9 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
     var imageView:UIImageView!;
     var selectButton:UIButton!;
     var _selectPhoto: Bool!;
-
+    private var maskImageView:UIImageView!;
+    
+    
     var selectPhoto:Bool{
         get{
             return _selectPhoto;
@@ -585,6 +579,7 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
                 else{
                     self.selectButton.setImage(UIImage(named: "LLPaySelectedNot"), forState: UIControlState.Normal);
                 }
+                self.maskImageView.hidden = !newValue;
             }
             _selectPhoto = newValue;
         }
@@ -595,6 +590,13 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
         
         self.imageView = UIImageView(frame: CGRectMake(0, 0, frame.width, frame.height));
         self.contentView.addSubview(self.imageView);
+        
+        self.maskImageView = UIImageView();
+        self.maskImageView.frame = self.imageView.frame;
+        self.imageView.addSubview(self.maskImageView);
+        self.maskImageView.hidden = true;
+        self.maskImageView.alpha = 0.4;
+        self.maskImageView.backgroundColor = UIColor.whiteColor();
         
         self.selectButton = UIButton(frame: CGRectMake(frame.size.width - 30, 0, 30, 30));
         self.selectButton.setImage(UIImage(named: "LLPaySelectedNot"), forState: UIControlState.Normal);
