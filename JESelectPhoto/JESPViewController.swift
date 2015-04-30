@@ -31,7 +31,7 @@ let KEY_ALLPHOTOS = "全部照片"
 }
 
 
-class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout,UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlowLayout,UITableViewDataSource,UITableViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MLImageCropDelegate {
     
     var delegate : JESPViewControllerDelegate?
     var maximumOfSelected:Int = 9;
@@ -120,24 +120,27 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
         
         self.collectionView!.registerClass(JEPhotoCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        self.collectionView?.frame = CGRectMake(self.collectionView!.frame.origin.x, self.collectionView!.frame.origin.y, self.collectionView!.frame.size.width, self.collectionView!.frame.size.height - 40);
+        if self.allowsMultipleSelection == true {
+            self.collectionView?.frame = CGRectMake(self.collectionView!.frame.origin.x, self.collectionView!.frame.origin.y, self.collectionView!.frame.size.width, self.collectionView!.frame.size.height - 40);
+        }
     }
     
     func initToolBar(){
-        
-        var toolBarBgImageView = UIImageView(frame: CGRectMake(0, self.view.frame.size.height - 20, self.view.frame.size.width, 40));
-        toolBarBgImageView.userInteractionEnabled = true;
-        toolBarBgImageView.image = UIImage(named: "order_search_bar_bg");
-        self.view.addSubview(toolBarBgImageView);
-        toolBarBgImageView.backgroundColor = UIColor.clearColor();
-        
-        var nextButton = UIButton(frame: CGRectMake(self.view.frame.width - 80, 5, 70, 30));
-        toolBarBgImageView.addSubview(nextButton);
-        
-        nextButton.setTitle("下一步", forState: UIControlState.Normal);
-        nextButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
-        nextButton.setBackgroundImage(UIImage(named: "exception"), forState: UIControlState.Normal);
-        nextButton.addTarget(self, action: "nextClick:", forControlEvents: UIControlEvents.TouchUpInside);
+        if self.allowsMultipleSelection == true{
+            var toolBarBgImageView = UIImageView(frame: CGRectMake(0, self.view.frame.size.height - 20, self.view.frame.size.width, 40));
+            toolBarBgImageView.userInteractionEnabled = true;
+            toolBarBgImageView.image = UIImage(named: "order_search_bar_bg");
+            self.view.addSubview(toolBarBgImageView);
+            toolBarBgImageView.backgroundColor = UIColor.clearColor();
+            
+            var nextButton = UIButton(frame: CGRectMake(self.view.frame.width - 80, 5, 70, 30));
+            toolBarBgImageView.addSubview(nextButton);
+            
+            nextButton.setTitle("下一步", forState: UIControlState.Normal);
+            nextButton.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal);
+            nextButton.setBackgroundImage(UIImage(named: "exception"), forState: UIControlState.Normal);
+            nextButton.addTarget(self, action: "nextClick:", forControlEvents: UIControlEvents.TouchUpInside);
+        }
     }
     
     func titleButtonClick() {
@@ -174,7 +177,7 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             });
         }
     }
-    func getAllSelectPhotos() -> NSArray{
+    func getAllSelectPhotos() -> NSMutableArray{
         
         var array = NSMutableArray();
         
@@ -208,11 +211,22 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
             picker.delegate = self;
             picker.allowsEditing = true;
             picker.sourceType = UIImagePickerControllerSourceType.Camera;
-
+            
             self.presentViewController(picker, animated: true) { () -> Void in
                 
             };
         }
+    }
+    
+//MARK: - MLImageCropDelegate
+    
+    func cropImage(cropImage: UIImage!, forOriginalImage originalImage: UIImage!) {
+       
+        self.delegate?.SPViewControllerdidSelectImages?([cropImage]);
+        self.dismissViewControllerAnimated(false, completion: { () -> Void in
+
+        });
+
     }
     
 //MARK: - UIImagePickerControllerDelegate
@@ -226,8 +240,9 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                 
 
                 var image = info[(self.allowsMultipleSelection == true ? UIImagePickerControllerOriginalImage : UIImagePickerControllerEditedImage)] as! UIImage;
-                
-                self.delegate?.SPViewControllerdidSelectImages?([image]);
+                var array = self.getAllSelectPhotos();
+                array.addObject(image);
+                self.delegate?.SPViewControllerdidSelectImages?(array);
                 
             }else{
                 
@@ -374,6 +389,10 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
     override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if indexPath.row == 0{
+            if self.selectPhotosCount >= self.maximumOfSelected && self.allowsMultipleSelection == true{
+                
+                return;
+            }
             //相机
             self.openCamera({ (image:UIImage) -> () in
                 
@@ -401,13 +420,18 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
                 if (self.delegate != nil){
                     var res = self.getAssetWithIndex(indexPath.row);
                     let image = UIImage(CGImage: res.defaultRepresentation().fullResolutionImage().takeUnretainedValue());
-                    var array = NSMutableArray(array: [image!]);
+                   
+                    //>>===============裁剪===============<<
+                    var imageCrop = MLImageCrop();
+                    imageCrop.delegate = self;
+                    imageCrop.ratioOfWidthAndHeight = 600.0/600.0;
                     
-                    self.delegate?.SPViewControllerdidSelectImages?(array);
+                    imageCrop.image = image;
+                    
+                    imageCrop.showWithAnimation(false);
+                    //>>===============裁剪===============<<
+                    
                 }
-                self.dismissViewControllerAnimated(false, completion: { () -> Void in
-                    
-                });
             }
         
         }

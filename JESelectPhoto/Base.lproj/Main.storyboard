@@ -32,15 +32,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NoF-dK-Via">
-                                <rect key="frame" x="200" y="200" width="200" height="200"/>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faB-u3-zA1">
+                                <rect key="frame" x="459" y="250" width="100" height="100"/>
                                 <color key="backgroundColor" red="1" green="0.19845111979999999" blue="0.40191590490000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="1yx-57-3Hd"/>
-                                    <constraint firstAttribute="height" constant="200" id="hWa-hj-4oz"/>
+                                    <constraint firstAttribute="width" constant="100" id="CTP-s1-pdi"/>
+                                    <constraint firstAttribute="height" constant="100" id="GBo-Jh-Wbj"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HiraKakuProN-W3" family="Hiragino Kaku Gothic ProN" pointSize="15"/>
-                                <state key="normal" title="选择照片">
+                                <state key="normal" title="单张照片">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="push:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="C0l-5a-5ul"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NoF-dK-Via">
+                                <rect key="frame" x="40" y="250" width="100" height="100"/>
+                                <color key="backgroundColor" red="1" green="0.19845111979999999" blue="0.40191590490000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HiraKakuProN-W3" family="Hiragino Kaku Gothic ProN" pointSize="15"/>
+                                <state key="normal" title="多张照片">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -50,8 +61,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="NoF-dK-Via" secondAttribute="centerX" id="7Nu-Q1-WJN"/>
-                            <constraint firstAttribute="centerY" secondItem="NoF-dK-Via" secondAttribute="centerY" id="fK6-M0-9IB"/>
+                            <constraint firstItem="faB-u3-zA1" firstAttribute="width" secondItem="NoF-dK-Via" secondAttribute="width" id="3W1-Ly-HnA"/>
+                            <constraint firstAttribute="centerY" secondItem="faB-u3-zA1" secondAttribute="centerY" id="Tpj-N8-ocx"/>
+                            <constraint firstAttribute="centerY" secondItem="NoF-dK-Via" secondAttribute="centerY" id="UZs-p3-d3U"/>
+                            <constraint firstItem="faB-u3-zA1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="NoF-dK-Via" secondAttribute="trailing" constant="54" id="nWm-fK-aYR"/>
+                            <constraint firstAttribute="trailing" secondItem="faB-u3-zA1" secondAttribute="trailing" constant="41" id="r10-pb-DGm"/>
+                            <constraint firstItem="faB-u3-zA1" firstAttribute="height" secondItem="NoF-dK-Via" secondAttribute="height" id="yWl-tr-Rgu"/>
+                            <constraint firstItem="NoF-dK-Via" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="40" id="yda-pn-EX5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mlN-84-FmD"/>
@@ -61,6 +77,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="43" y="330"/>
         </scene>
     </scenes>
 </document>

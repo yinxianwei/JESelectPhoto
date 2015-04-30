@@ -14,14 +14,9 @@
 		843DF4111ADFB0C3005FACB7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 843DF4101ADFB0C3005FACB7 /* Images.xcassets */; };
 		843DF4141ADFB0C3005FACB7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 843DF4121ADFB0C3005FACB7 /* LaunchScreen.xib */; };
 		843DF4201ADFB0C3005FACB7 /* JESelectPhotoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843DF41F1ADFB0C3005FACB7 /* JESelectPhotoTests.swift */; };
-		843DF4371ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF42B1ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m */; };
-		843DF4381ADFB0D3005FACB7 /* RSKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF42E1ADFB0D3005FACB7 /* RSKImageCropViewController.m */; };
-		843DF4391ADFB0D3005FACB7 /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4301ADFB0D3005FACB7 /* RSKImageScrollView.m */; };
-		843DF43A1ADFB0D3005FACB7 /* RSKTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4321ADFB0D3005FACB7 /* RSKTouchView.m */; };
-		843DF43B1ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4341ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m */; };
-		843DF43C1ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m in Sources */ = {isa = PBXBuildFile; fileRef = 843DF4361ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m */; };
 		843DF43E1ADFB2DC005FACB7 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */; };
 		843DF4401ADFB3E7005FACB7 /* JESPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */; };
+		84A045641AF2170F005D0ED6 /* MLImageCrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A045631AF2170F005D0ED6 /* MLImageCrop.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,21 +41,11 @@
 		843DF4191ADFB0C3005FACB7 /* JESelectPhotoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JESelectPhotoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		843DF41E1ADFB0C3005FACB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		843DF41F1ADFB0C3005FACB7 /* JESelectPhotoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JESelectPhotoTests.swift; sourceTree = "<group>"; };
-		843DF42A1ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+RSKImageCropper.h"; sourceTree = "<group>"; };
-		843DF42B1ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+RSKImageCropper.m"; sourceTree = "<group>"; };
-		843DF42C1ADFB0D3005FACB7 /* RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropper.h; sourceTree = "<group>"; };
-		843DF42D1ADFB0D3005FACB7 /* RSKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageCropViewController.h; sourceTree = "<group>"; };
-		843DF42E1ADFB0D3005FACB7 /* RSKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageCropViewController.m; sourceTree = "<group>"; };
-		843DF42F1ADFB0D3005FACB7 /* RSKImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKImageScrollView.h; sourceTree = "<group>"; };
-		843DF4301ADFB0D3005FACB7 /* RSKImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKImageScrollView.m; sourceTree = "<group>"; };
-		843DF4311ADFB0D3005FACB7 /* RSKTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSKTouchView.h; sourceTree = "<group>"; };
-		843DF4321ADFB0D3005FACB7 /* RSKTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSKTouchView.m; sourceTree = "<group>"; };
-		843DF4331ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+RSKImageCropper.h"; sourceTree = "<group>"; };
-		843DF4341ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+RSKImageCropper.m"; sourceTree = "<group>"; };
-		843DF4351ADFB0D3005FACB7 /* UIImage+RSKImageCropper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RSKImageCropper.h"; sourceTree = "<group>"; };
-		843DF4361ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RSKImageCropper.m"; sourceTree = "<group>"; };
 		843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JESPViewController.swift; sourceTree = "<group>"; };
+		843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JESPViewController.swift; path = ../JESPViewController.swift; sourceTree = "<group>"; };
+		84A045621AF2170F005D0ED6 /* MLImageCrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLImageCrop.h; sourceTree = "<group>"; };
+		84A045631AF2170F005D0ED6 /* MLImageCrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLImageCrop.m; sourceTree = "<group>"; };
+		84A045681AF21782005D0ED6 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +71,6 @@
 		843DF3FB1ADFB0C3005FACB7 = {
 			isa = PBXGroup;
 			children = (
-				840CF2AB1AF0CB3000FD6C4A /* AVFoundation.framework */,
-				843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */,
 				843DF4061ADFB0C3005FACB7 /* JESelectPhoto */,
 				843DF41C1ADFB0C3005FACB7 /* JESelectPhotoTests */,
 				843DF4051ADFB0C3005FACB7 /* Products */,
@@ -106,12 +89,12 @@
 		843DF4061ADFB0C3005FACB7 /* JESelectPhoto */ = {
 			isa = PBXGroup;
 			children = (
-				843DF4291ADFB0D3005FACB7 /* RSKImageCropper */,
+				84A045611AF2170F005D0ED6 /* MLImageCrop */,
 				843DF4091ADFB0C3005FACB7 /* AppDelegate.swift */,
 				843DF40B1ADFB0C3005FACB7 /* ViewController.swift */,
-				843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */,
 				843DF40D1ADFB0C3005FACB7 /* Main.storyboard */,
 				843DF4101ADFB0C3005FACB7 /* Images.xcassets */,
+				84A045681AF21782005D0ED6 /* Bridging-Header.h */,
 				843DF4121ADFB0C3005FACB7 /* LaunchScreen.xib */,
 				843DF4071ADFB0C3005FACB7 /* Supporting Files */,
 			);
@@ -122,6 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				843DF4081ADFB0C3005FACB7 /* Info.plist */,
+				840CF2AB1AF0CB3000FD6C4A /* AVFoundation.framework */,
+				843DF43D1ADFB2DC005FACB7 /* AssetsLibrary.framework */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -143,24 +128,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		843DF4291ADFB0D3005FACB7 /* RSKImageCropper */ = {
+		84A045611AF2170F005D0ED6 /* MLImageCrop */ = {
 			isa = PBXGroup;
 			children = (
-				843DF42A1ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.h */,
-				843DF42B1ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m */,
-				843DF42C1ADFB0D3005FACB7 /* RSKImageCropper.h */,
-				843DF42D1ADFB0D3005FACB7 /* RSKImageCropViewController.h */,
-				843DF42E1ADFB0D3005FACB7 /* RSKImageCropViewController.m */,
-				843DF42F1ADFB0D3005FACB7 /* RSKImageScrollView.h */,
-				843DF4301ADFB0D3005FACB7 /* RSKImageScrollView.m */,
-				843DF4311ADFB0D3005FACB7 /* RSKTouchView.h */,
-				843DF4321ADFB0D3005FACB7 /* RSKTouchView.m */,
-				843DF4331ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.h */,
-				843DF4341ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m */,
-				843DF4351ADFB0D3005FACB7 /* UIImage+RSKImageCropper.h */,
-				843DF4361ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m */,
+				84A045621AF2170F005D0ED6 /* MLImageCrop.h */,
+				84A045631AF2170F005D0ED6 /* MLImageCrop.m */,
+				843DF43F1ADFB3E7005FACB7 /* JESPViewController.swift */,
 			);
-			path = RSKImageCropper;
+			path = MLImageCrop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,14 +238,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				843DF4391ADFB0D3005FACB7 /* RSKImageScrollView.m in Sources */,
+				84A045641AF2170F005D0ED6 /* MLImageCrop.m in Sources */,
 				843DF40C1ADFB0C3005FACB7 /* ViewController.swift in Sources */,
-				843DF4381ADFB0D3005FACB7 /* RSKImageCropViewController.m in Sources */,
-				843DF43A1ADFB0D3005FACB7 /* RSKTouchView.m in Sources */,
-				843DF43B1ADFB0D3005FACB7 /* UIApplication+RSKImageCropper.m in Sources */,
 				843DF4401ADFB3E7005FACB7 /* JESPViewController.swift in Sources */,
-				843DF4371ADFB0D3005FACB7 /* CGGeometry+RSKImageCropper.m in Sources */,
-				843DF43C1ADFB0D3005FACB7 /* UIImage+RSKImageCropper.m in Sources */,
 				843DF40A1ADFB0C3005FACB7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +373,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0e1b7c2d-6ac5-471f-ba8f-566e698fa74f";
+				SWIFT_OBJC_BRIDGING_HEADER = "JESelectPhoto/Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -415,6 +386,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0e1b7c2d-6ac5-471f-ba8f-566e698fa74f";
+				SWIFT_OBJC_BRIDGING_HEADER = "JESelectPhoto/Bridging-Header.h";
 			};
 			name = Release;
 		};

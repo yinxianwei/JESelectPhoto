@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController,JESPViewControllerDelegate {
+class ViewController: UIViewController,JESPViewControllerDelegate,MLImageCropDelegate {
 
     @IBOutlet weak var button: UIButton!
     override func viewDidLoad() {
@@ -16,8 +16,14 @@ class ViewController: UIViewController,JESPViewControllerDelegate {
     
     }
   
-    @IBAction func push(sender: AnyObject) {
+    func cropImage(cropImage: UIImage!, forOriginalImage originalImage: UIImage!) {
         
+    }
+    @IBAction func push(sender: AnyObject) {
+
+        let button = sender as! UIButton;
+        
+       
         var flowlayout:UICollectionViewFlowLayout = UICollectionViewFlowLayout();
         flowlayout.scrollDirection = UICollectionViewScrollDirection.Vertical;
         
@@ -25,8 +31,8 @@ class ViewController: UIViewController,JESPViewControllerDelegate {
 
         var s = JESPViewController(collectionViewLayout:flowlayout)
         s.delegate = self;
-        s.allowsMultipleSelection = true;
-        s.maximumOfSelected = 3;
+        s.allowsMultipleSelection = button.tag == 1 ? true : false;
+        s.maximumOfSelected = 6;
         self.presentViewController(UINavigationController(rootViewController: s), animated: true) { () -> Void in
             
         };
