@@ -201,7 +201,8 @@ class JESPViewController: UICollectionViewController,UICollectionViewDelegateFlo
 
         let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo);
     
-        if authStatus == AVAuthorizationStatus.NotDetermined || authStatus == AVAuthorizationStatus.Denied || authStatus == AVAuthorizationStatus.Restricted{
+        
+        if authStatus == AVAuthorizationStatus.Denied || authStatus == AVAuthorizationStatus.Restricted{
             
             self.delegate?.SPViewControllerError?(NSError(domain: "没有相机权限或设备无相机", code: -1, userInfo: nil));
             
@@ -614,6 +615,20 @@ class JEPhotoCollectionViewCell:UICollectionViewCell {
         
         // Initialization code
     }
+    
+//    func supportedInterfaceOrientations() -> Int{
+//
+//        return Int(UIInterfaceOrientationMask.Portrait.rawValue);
+//        }
+//    func shouldAutorotate() -> Bool{
+//        return true;
+//    }
+//    
+//    func shouldAutorotateToInterfaceOrientation(interfaceOrientation:UIInterfaceOrientation) -> Bool{
+//        
+//           return (interfaceOrientation == UIInterfaceOrientation.Portrait);
+//        
+//    }
     
 }
 
